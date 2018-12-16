@@ -10,27 +10,29 @@ class LinkedList{
 		struct node{
 			T val;
 			node* next;
-			node(T a){
+			node(const T& a){
 				val = T(a);
+				next = nullptr;
+			}
+			~node(){
 				next = nullptr;
 			}
 		}* head, * current;
 		
-		void init(T a){
-			//std::cout<<"initializing: "<<&a<<std::endl;
+		void init(const T& a){
 			size = 1;
 			head = new node(a);
 			current = head;
 		}
 	public:
 		LinkedList();
-		LinkedList(T a);
+		LinkedList(const T& a);
 		LinkedList(const LinkedList<T>& ll);
 		~LinkedList();
 		
-		void insert(T a, unsigned int index);
-		void append(T a);
-		void prepend(T a);
+		void insert(const T& a, unsigned int index);
+		void append(const T& a);
+		void prepend(const T& a);
 		void deleteNode(unsigned int index);
 		T get(unsigned int i) const;
 		int getSize() const;
@@ -38,29 +40,23 @@ class LinkedList{
 
 template <typename T>
 LinkedList<T>::LinkedList(){
-	//std::cout<<"creating: "<<this;
 	size = 0;
-	//std::cout<<" size: "<<size<<std::endl;
 	head = nullptr;
 }
 
 template <typename T>
-LinkedList<T>::LinkedList(T a){
-	//std::cout<<"creating: "<<this<<std::endl;
+LinkedList<T>::LinkedList(const T& a){
 	init(a);
-	//std::cout<<" size: "<<size<<std::endl;
 }
 
 template <typename T>
 LinkedList<T>::~LinkedList(){
-	//std::cout<<"destroying: "<<this<<" size: "<<size<<std::endl;
 	unsigned int i = size;
 	while(i) deleteNode(--i);
 }
 
 template <typename T>
-void LinkedList<T>::insert(T a,unsigned int index){
-	//std::cout<<"inserting: "<<a<<" size: "<<size<<std::endl;
+void LinkedList<T>::insert(const T& a,unsigned int index){
 	if(index > size){
 		append(a);
 	}else if(index < 1){
@@ -85,8 +81,7 @@ void LinkedList<T>::insert(T a,unsigned int index){
 }
 
 template <typename T>
-void LinkedList<T>::append(T a){
-	//std::cout<<"appending: "<<&a<<" size: "<<size<<std::endl;
+void LinkedList<T>::append(const T& a){
 	if(head == nullptr){
 		init(a);
 	}else{
@@ -102,8 +97,7 @@ void LinkedList<T>::append(T a){
 }
 
 template <typename T>
-void LinkedList<T>::prepend(T a){
-	//std::cout<<"prepending: "<<a<<" size: "<<size<<std::endl;
+void LinkedList<T>::prepend(const T& a){
 	if(head == nullptr){
 		init(a);
 	}
@@ -119,7 +113,6 @@ void LinkedList<T>::prepend(T a){
 
 template <typename T>
 void LinkedList<T>::deleteNode(unsigned int index){
-	//std::cout<<"deleting: "<<index<<" size: "<<size<<std::endl;
 	if(size > 0 && index < size){
 		if(index == 0){
 			node* temp = head;
@@ -147,31 +140,26 @@ void LinkedList<T>::deleteNode(unsigned int index){
 //ensure !(i >= size || i < 0 || size == 0) before using
 template <typename T>
 T LinkedList<T>::get(unsigned int i) const{
-	//std::cout<<"getting: "<<i<<" size: "<<size<<std::endl;
 	node* itr = head;
 	do{
-		if(!i) return itr->val;
+	  if(!i) return itr->val;
 		itr = itr->next;
 	}while(i-- >= 0);
-	//std::cout<<"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPSSS!!"<<std::endl;
 }
 
 template <typename T>
 int LinkedList<T>::getSize() const{
-	//std::cout<<"getting size: "<<size<<std::endl;
 	return size;
 }
 
 //copy constructor
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& ll){
-	std::cout<<"copying "<<&ll;
 	size = 0;
 	head = nullptr;
 	for(int i = 0; i < ll.getSize(); i++){
-		append(ll.get(i));
+	  append(ll.get(i));
 	}
-	std::cout<<" size: "<<size<<std::endl;
 }
 
 //In a tropical region, far away,
