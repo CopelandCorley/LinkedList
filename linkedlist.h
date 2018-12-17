@@ -10,10 +10,7 @@ class LinkedList{
 		struct node{
 			T val;
 			node* next;
-			node(const T& a){
-				val = T(a);
-				next = nullptr;
-			}
+			node(const T& a) : val(a), next(nullptr){}
 			~node(){
 				next = nullptr;
 			}
