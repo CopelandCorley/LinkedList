@@ -1,7 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
-#include <iostream>
-/////////////////////////////////////make rule of five complient
+
 template <typename T>
 class LinkedList{
 	private:
@@ -28,16 +27,13 @@ class LinkedList{
 		void insert(const T& a, unsigned int index);
 		void append(const T& a);
 		void prepend(const T& a);
-		void deleteNode(unsigned int index);
+		void remove(unsigned int index);
 		T get(unsigned int i) const;
-		int getSize() const;
+		int count() const;
 };
 
 template <typename T>
-LinkedList<T>::LinkedList(){
-	size = 0;
-	head = nullptr;
-}
+LinkedList<T>::LinkedList(): size(0), head(nullptr){}
 
 template <typename T>
 LinkedList<T>::LinkedList(const T& a){
@@ -46,7 +42,7 @@ LinkedList<T>::LinkedList(const T& a){
 
 template <typename T>
 LinkedList<T>::~LinkedList(){
-	while(size) deleteNode(0);
+	while(size) remove(0);
 }
 
 template <typename T>
@@ -106,7 +102,7 @@ void LinkedList<T>::prepend(const T& a){
 }
 
 template <typename T>
-void LinkedList<T>::deleteNode(unsigned int index){
+void LinkedList<T>::remove(unsigned int index){
 	if(size > 0 && index < size){
 		if(index == 0){
 			node* temp = head;
@@ -142,26 +138,26 @@ T LinkedList<T>::get(unsigned int i) const{
 }
 
 template <typename T>
-int LinkedList<T>::getSize() const{
+int LinkedList<T>::count() const{
 	return size;
 }
 
 //copy constructor
 template <typename T>
-LinkedList<T>::LinkedList(const LinkedList<T>& ll){
-	size = 0;
-	for(int i = 0; i < ll.getSize(); i++){
+LinkedList<T>::LinkedList(const LinkedList<T>& ll): size(0){
+	for(int i = 0; i < ll.count(); i++){
 	  append(ll.get(i));
 	}
 }
 
+//copy-assignment operator
 template <typename T>
 LinkedList<T>& LinkedList<T>::operator =(const LinkedList<T>& ll){
 	if(this != &ll){
-		while(size) deleteNode(0);
-		for(int i = 0; i < ll.getSize(); i++){
+		while(size) remove(0);
+		for(int i = 0; i < ll.count(); i++){
 			append(ll.get(i));
-	}
+		}
 	}
 	return *this;
 }
