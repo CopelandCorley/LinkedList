@@ -10,10 +10,7 @@ class LinkedList{
 		struct node{
 			T val;
 			node* next;
-			node(const T& a) : val(a), next(nullptr){}
-			~node(){
-				next = nullptr;
-			}
+			node(const T& a): val(a), next(nullptr){}
 		}* head, * current;
 		
 		void init(const T& a){
@@ -25,6 +22,7 @@ class LinkedList{
 		LinkedList();
 		LinkedList(const T& a);
 		LinkedList(const LinkedList<T>& ll);
+		LinkedList& operator= (const LinkedList<T>& ll);
 		~LinkedList();
 		
 		void insert(const T& a, unsigned int index);
@@ -48,8 +46,7 @@ LinkedList<T>::LinkedList(const T& a){
 
 template <typename T>
 LinkedList<T>::~LinkedList(){
-	unsigned int i = size;
-	while(i) deleteNode(--i);
+	while(size) deleteNode(0);
 }
 
 template <typename T>
@@ -59,7 +56,7 @@ void LinkedList<T>::insert(const T& a,unsigned int index){
 	}else if(index < 1){
 		prepend(a);
 	}else{
-		if(head == nullptr){
+		if(size == 0){
 			init(a);
 		}
 		else{
@@ -79,7 +76,7 @@ void LinkedList<T>::insert(const T& a,unsigned int index){
 
 template <typename T>
 void LinkedList<T>::append(const T& a){
-	if(head == nullptr){
+	if(size == 0){
 		init(a);
 	}else{
 		node* n;
@@ -95,7 +92,7 @@ void LinkedList<T>::append(const T& a){
 
 template <typename T>
 void LinkedList<T>::prepend(const T& a){
-	if(head == nullptr){
+	if(size == 0){
 		init(a);
 	}
 	else{
@@ -153,10 +150,20 @@ int LinkedList<T>::getSize() const{
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& ll){
 	size = 0;
-	head = nullptr;
 	for(int i = 0; i < ll.getSize(); i++){
 	  append(ll.get(i));
 	}
+}
+
+template <typename T>
+LinkedList<T>& LinkedList<T>::operator =(const LinkedList<T>& ll){
+	if(this != &ll){
+		while(size) deleteNode(0);
+		for(int i = 0; i < ll.getSize(); i++){
+			append(ll.get(i));
+	}
+	}
+	return *this;
 }
 
 //In a tropical region, far away,
