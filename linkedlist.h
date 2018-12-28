@@ -22,13 +22,14 @@ class LinkedList{
 		LinkedList(const T& a);
 		LinkedList(const LinkedList<T>& ll);
 		LinkedList& operator= (const LinkedList<T>& ll);
+		T& operator[] (const unsigned int index);
 		~LinkedList();
 		
 		void insert(const T& a, unsigned int index);
 		void append(const T& a);
 		void prepend(const T& a);
 		void remove(unsigned int index);
-		T get(unsigned int i) const;
+		T& get(unsigned int i) const;
 		int count() const;
 };
 
@@ -129,7 +130,7 @@ void LinkedList<T>::remove(unsigned int index){
 
 //ensure !(i >= size || i < 0 || size == 0) before using
 template <typename T>
-T LinkedList<T>::get(unsigned int i) const{
+T& LinkedList<T>::get(unsigned int i) const{
 	node* itr = head;
 	do{
 	  if(!i) return itr->val;
@@ -160,6 +161,11 @@ LinkedList<T>& LinkedList<T>::operator =(const LinkedList<T>& ll){
 		}
 	}
 	return *this;
+}
+
+template <typename T>
+T& LinkedList<T>::operator [](const unsigned int index){
+	return get(index);
 }
 
 //In a tropical region, far away,
