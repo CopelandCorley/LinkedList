@@ -1,5 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
+#include <stdexcept>
 
 template <typename T>
 class LinkedList{
@@ -12,18 +13,18 @@ class LinkedList{
 			node(const T& a): val(a), next(nullptr){}
 		}* head, * current;
 		
-		void init(const T& a){
+		void inline init(const T& a){
 			size = 1;
 			head = new node(a);
 			current = head;
 		}
 	public:
 		LinkedList();
+		virtual ~LinkedList() noexcept;
 		LinkedList(const T& a);
 		LinkedList(const LinkedList<T>& ll);
 		LinkedList& operator= (const LinkedList<T>& ll);
 		T& operator[] (const unsigned int index);
-		~LinkedList();
 		
 		void insert(const T& a, unsigned int index);
 		void append(const T& a);
@@ -37,62 +38,21 @@ template <typename T>
 LinkedList<T>::LinkedList(): size(0), head(nullptr){}
 
 template <typename T>
-LinkedList<T>::LinkedList(const T& a){
-	init(a);
-}
+LinkedList<T>::LinkedList(const T& a) : head(new node(a)), current(head), size(1){}
 
 template <typename T>
-LinkedList<T>::~LinkedList(){
+LinkedList<T>::~LinkedList() noexcept{
 	while(size) remove(0);
 }
 
+//inserts an element at the specified index of the linked list
 template <typename T>
-void LinkedList<T>::insert(const T& a,unsigned int index){
-	if(index > size){
-		append(a);
-	}else if(index < 1){
-		prepend(a);
-	}else{
-		if(size == 0){
-			init(a);
-		}
-		else{
-			node* n;
-			n = new node(a);
-			int count = 0;
-			while(count++ < index - 1){
-				current = current->next;
-			}
-			n->next = current->next;
-			current->next = n;
-			current = head;
-			size++;
-		}
-	}
-}
-
-template <typename T>
-void LinkedList<T>::append(const T& a){
-	if(size == 0){
-		init(a);
-	}else{
-		node* n;
-		n = new node(a);
-		while(current->next != nullptr){
-			current = current->next;
-		}
-		current->next = n;
-		current = head;
-		size++;
-	}
-}
-
-template <typename T>
-void LinkedList<T>::prepend(const T& a){
+void LinkedList<T>::insert(const T& a, unsigned int index){
+	if(index < 0 || index > size) throw std::out_of_range("Index out of range in method 'void insert(const T& a, unsigned int index)' in LinkedList<T>");
 	if(size == 0){
 		init(a);
 	}
-	else{
+	else if(index == 0){//logic to prepend
 		node* n;
 		n = new node(a);
 		n->next = head;
@@ -100,44 +60,70 @@ void LinkedList<T>::prepend(const T& a){
 		current = head;
 		size++;
 	}
-}
-
-template <typename T>
-void LinkedList<T>::remove(unsigned int index){
-	if(size > 0 && index < size){
-		if(index == 0){
-			node* temp = head;
-			head = head->next;
-			delete temp;
-			temp = nullptr;
-			current = head;
+	else{//insert logic
+		node* n;
+		n = new node(a);
+		int count = 0;
+		while(count++ < index - 1){
+			current = current->next;
 		}
-		else{
-			unsigned int count = 0;
-			while(count++ < index - 1){
-				current = current->next;
-			}
-			node* temp = current->next;
-			current->next = current->next->next;
-			delete temp;
-			temp = nullptr;
-			current = head;
-		}
-		size--;
-		if(!size) head = nullptr;
+		n->next = current->next;
+		current->next = n;
+		current = head;
+		size++;
 	}
 }
 
-//ensure !(i >= size || i < 0 || size == 0) before using
+//appends an element to the end of the linked list
 template <typename T>
-T& LinkedList<T>::get(unsigned int i) const{
-	node* itr = head;
-	do{
-	  if(!i) return itr->val;
-		itr = itr->next;
-	}while(i-- >= 0);
+void LinkedList<T>::append(const T& a){
+	insert(a, size);
 }
 
+//prepends an element to the beginning of the linked list
+template <typename T>
+void LinkedList<T>::prepend(const T& a){
+	insert(a, 0);
+}
+
+//removes the element at specified index
+template <typename T>
+void LinkedList<T>::remove(unsigned int index){
+	if(index < 0 || index >= size) throw std::out_of_range("Index out of range in method 'void remove(unsigned int index)' in LinkedList<T>");
+	if(index == 0){
+		node* temp = head;
+		head = head->next;
+		delete temp;
+		temp = nullptr;
+		current = head;
+	}
+	else{
+		unsigned int count = 0;
+		while(count++ < index - 1){
+			current = current->next;
+		}
+		node* temp = current->next;
+		current->next = current->next->next;
+		delete temp;
+		temp = nullptr;
+		current = head;
+	}
+	size--;
+	if(!size) head = nullptr;
+}
+
+//returns a reference to the element at specified index
+template <typename T>
+T& LinkedList<T>::get(unsigned int index) const{
+	if(index < 0 || index >= size) throw std::out_of_range("Index out of range in method 'T& get(unsigned int index) const' in LinkedList<T>");
+	node* itr = head;
+	do{
+	  if(!index) return itr->val;
+		itr = itr->next;
+	}while(index-- >= 0);
+}
+
+//returns the size of the linked list
 template <typename T>
 int LinkedList<T>::count() const{
 	return size;
@@ -163,13 +149,27 @@ LinkedList<T>& LinkedList<T>::operator =(const LinkedList<T>& ll){
 	return *this;
 }
 
+//[] operator
 template <typename T>
 T& LinkedList<T>::operator [](const unsigned int index){
 	return get(index);
 }
+//Atop an impossibly tall mountain 
+//there sat a lonely, crumbly boulder.
+//Weathered by age and crippling loneliness, each passing day .
+//Of course, he hadn't always been so lonely. The mountaintop was once host
+//to a thriving community of stones of all shapes and sizes, but they 
+//had slowly vanished over the years until he was finally the last. His friend George had 
+//eroded into the pile of dust to his left some millenia ago, and Sam, who quite 
+//liked living her life on the edge, had been knocked loose by a tremor
+//and fell down the mountain some four centuries prior. His most recent friend was a little 
+//tadpole who he had noticed in the spring, but she left once her pond began to dry up.
+//Falls down mountain due to frog. Becomes sediment. Meets other sediment. Becomes too crowded. Becomes sedimentary
+//rock underground.
 
-//In a tropical region, far away,
-//atop the most equatorial mountain,
+
+
+//Atop an mountain,                             //tadpole knocks boulder down
 //there lived one singular tadpole.
 //"Quite a strange place to call home
 //for a tadpole," you might think. Well, it 

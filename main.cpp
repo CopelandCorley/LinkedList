@@ -6,9 +6,11 @@ int main(int argc, char **argv)
 	
 	//unit tests
 	
+	//check for memory leaks
+	
 	for(int i = 0; i < 100000; i++){
 		LinkedList<int> c(5);
-		c.append(4);//check for memory leaks
+		c.append(4);
 		c.append(3);
 		LinkedList<int> d(6);
 		d.append(7);
@@ -24,7 +26,7 @@ int main(int argc, char **argv)
 			LinkedList<LinkedList<LinkedList<LinkedList<int> > > > f;
 			f.prepend(e);
 			f.append(e);
-			LinkedList<LinkedList<LinkedList<int> > > g(e);
+			LinkedList<LinkedList<LinkedList<int> >> g(e);
 			f.insert(g, 1);
 			for(int k = 0; k < 1000; k++)f.append(g);
 			LinkedList<LinkedList<LinkedList<LinkedList<int> > > > h(f);
@@ -40,7 +42,30 @@ int main(int argc, char **argv)
 			std::cout << "c.get(0): " << c.get(0) << "\n";
 		}
 	}
-
+/*
+	//check insert works
+	for(int i = 0; i < 1000; i++){
+		LinkedList<int> ll(5);
+		for(int j = 0; j < 10; j++){
+			ll.insert(6, 1);
+			std::cout << ll.get(0) << " " << ll.get(1) << "\n";
+			std::cout << ll.count() << "\n";
+			ll.remove(0);
+			std::cout << ll.count() << "\n";
+			ll.remove(0);
+			std::cout << ll.count() << "\n";
+			ll.insert(8, 0);
+			std::cout << ll.count() << "\n";
+			ll.insert(9, 0);
+			std::cout << ll.count() << "\n";
+			std::cout << ll.get(0) << " " << ll.get(1) << "\n";
+			ll.remove(0);
+			std::cout << ll.count() << "\n";
+			//ll.remove(0);
+			//std::cout << ll.count() << "\n";
+		}
+	}
+*/
 	system("PAUSE");
 	return 0;
 }
