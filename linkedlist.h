@@ -1,6 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include <stdexcept>
+#include <iostream>
 
 template <typename T>
 class LinkedList{
@@ -22,8 +23,10 @@ class LinkedList{
 		LinkedList();
 		virtual ~LinkedList() noexcept;
 		LinkedList(const T& a);
-		LinkedList(const LinkedList<T>& ll);
-		LinkedList& operator= (const LinkedList<T>& ll);
+		LinkedList(const LinkedList<T>& rhs);
+		LinkedList(LinkedList<T>&& rhs) noexcept;
+		LinkedList& operator= (const LinkedList<T>& rhs);
+		LinkedList& operator= (LinkedList<T>&& rhs) noexcept;
 		T& operator[] (const unsigned int index);
 		
 		void insert(const T& a, unsigned int index);
@@ -35,14 +38,14 @@ class LinkedList{
 };
 
 template <typename T>
-LinkedList<T>::LinkedList(): size(0), head(nullptr){}
+LinkedList<T>::LinkedList() : size(0), head(nullptr) {}
 
 template <typename T>
 LinkedList<T>::LinkedList(const T& a) : head(new node(a)), current(head), size(1){}
 
 template <typename T>
 LinkedList<T>::~LinkedList() noexcept{
-	while(size) remove(0);
+	while (size) remove(0);
 }
 
 //inserts an element at the specified index of the linked list
@@ -52,7 +55,7 @@ void LinkedList<T>::insert(const T& a, unsigned int index){
 	if(size == 0){
 		init(a);
 	}
-	else if(index == 0){//logic to prepend
+	else if(index == 0){//prepend logic
 		node* n;
 		n = new node(a);
 		n->next = head;
@@ -60,7 +63,7 @@ void LinkedList<T>::insert(const T& a, unsigned int index){
 		current = head;
 		size++;
 	}
-	else{//insert logic
+	else{//insert+append logic
 		node* n;
 		n = new node(a);
 		int count = 0;
@@ -131,21 +134,38 @@ int LinkedList<T>::count() const{
 
 //copy constructor
 template <typename T>
-LinkedList<T>::LinkedList(const LinkedList<T>& ll): size(0){
-	for(int i = 0; i < ll.count(); i++){
-	  append(ll.get(i));
+LinkedList<T>::LinkedList(const LinkedList<T>& rhs): size(0){
+	for(int i = 0; i < rhs.count(); i++){
+	  append(rhs.get(i));
 	}
+}
+
+//move constructor
+template <typename T>
+LinkedList<T>::LinkedList(LinkedList<T>&& rhs) noexcept : head(rhs.head), current(rhs.current), size(rhs.size) {
+	rhs.head = rhs.current = nullptr;
+	size = 0;
 }
 
 //copy-assignment operator
 template <typename T>
-LinkedList<T>& LinkedList<T>::operator =(const LinkedList<T>& ll){
-	if(this != &ll){
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& rhs){
+	if(this != &rhs){
 		while(size) remove(0);
-		for(int i = 0; i < ll.count(); i++){
-			append(ll.get(i));
+		for(int i = 0; i < rhs.count(); i++){
+			append(rhs.get(i));
 		}
 	}
+	return *this;
+}
+
+//move-assignment operator
+template<typename T>
+LinkedList<T>& LinkedList<T>::operator=(LinkedList<T>&& rhs) noexcept {
+	head = current = rhs.head;
+	size = rhs.size;
+	rhs.size = 0;
+	rhs.head = rhs.current = nullptr;
 	return *this;
 }
 

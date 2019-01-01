@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 	//unit tests
 	
 	//check for memory leaks
-	
+	/*
 	for(int i = 0; i < 100000; i++){
 		LinkedList<int> c(5);
 		c.append(4);
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 			c.get(0)++;
 			std::cout << "c.get(0): " << c.get(0) << "\n";
 		}
-	}
+	}*/
 /*
 	//check insert works
 	for(int i = 0; i < 1000; i++){
@@ -64,6 +64,25 @@ int main(int argc, char **argv)
 			//ll.remove(0);
 			//std::cout << ll.count() << "\n";
 		}
+	}
+
+/*
+	//test move constructor + cool progress bar
+	int times = 1000;
+	for(int i = 0; i < times; i++)
+	{
+		std::cout << '[';
+		int j;
+		for (j = 0; j < 100 * i / times; j++) {
+			std::cout << 'x';
+		}
+		for (j = 100 - j; j > 0; j--) {
+			std::cout << ' ';
+		}
+		std::cout << ']';
+		LinkedList<int> linky[1];
+		linky[0] = LinkedList<int>(5);
+		system("CLS");
 	}
 */
 	system("PAUSE");
