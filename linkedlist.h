@@ -174,48 +174,4 @@ template <typename T>
 T& LinkedList<T>::operator [](const unsigned int index){
 	return get(index);
 }
-//Atop an impossibly tall mountain 
-//there sat a lonely, crumbly boulder.
-//Weathered by age and crippling loneliness, each passing day .
-//Of course, he hadn't always been so lonely. The mountaintop was once host
-//to a thriving community of stones of all shapes and sizes, but they 
-//had slowly vanished over the years until he was finally the last. His friend George had 
-//eroded into the pile of dust to his left some millenia ago, and Sam, who quite 
-//liked living her life on the edge, had been knocked loose by a tremor
-//and fell down the mountain some four centuries prior. His most recent friend was a little 
-//tadpole who he had noticed in the spring, but she left once her pond began to dry up.
-//Falls down mountain due to frog. Becomes sediment. Meets other sediment. Becomes too crowded. Becomes sedimentary
-//rock underground.
-
-
-
-//Atop an mountain,                             //tadpole knocks boulder down
-//there lived one singular tadpole.
-//"Quite a strange place to call home
-//for a tadpole," you might think. Well, it 
-//was not so strange, in fact, because,
-//surrounding this tadpole, providing her with 
-//all of the nourishment and shelter for the past
-//four weeks, was a puddle.
-//A tiny puddle. 
-//A puddle that looked like it once had
-//been a rather modest pond.
-//But this puddle was not a pond. 
-//No, I assure you, this puddle was, indeed,
-//a puddle. And beneath this puddle stood the most
-//equatorial of mountains upon which sat the 
-//most equatorial puddle containing the 
-//most equatorial tadpole.
-//
-//Barely begun to metamorphose.
-//And this tadpole was just realizing that the great, big pond
-//she called home was feeling a bit more cramped than usual.
-//Just last week it took her nearly a half hour
-//to swim the perimeter of her 
-//
-//Dreadful existence as a tadpole.
-//
-//She could hop! And she could cling! And she could climb!
-//So she hopped and clinged and climbed her way down the 
-//mountain. Fulfillment.
 #endif
